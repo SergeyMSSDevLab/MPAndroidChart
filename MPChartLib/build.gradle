@@ -5,7 +5,7 @@ apply plugin: 'maven'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion '25.0.0'
+    buildToolsVersion '25.0.2'
     // resourcePrefix 'mpcht'
     defaultConfig {
         minSdkVersion 9
@@ -69,4 +69,19 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 artifacts {
     archives sourcesJar
     archives javadocJar
+}
+
+// Windows: gradlew uploadArchives
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository url: 'file://' + new File(System.getProperty('user.home'), '.m2/repository').absolutePath
+
+            pom.project {
+                groupId 'com.mssdevlab.mpchartlib'
+                artifactId 'mpchartlib'
+                version android.defaultConfig.versionName
+            }
+        }
+    }
 }
